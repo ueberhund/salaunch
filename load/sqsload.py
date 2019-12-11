@@ -9,10 +9,28 @@ import decimal
 from locust import HttpLocust, TaskSet, task, between
 
 def generate_licenseplate():
-    return "D215J"
+    return character_range(3) + " " + number_range(3)
         
 def generate_toll():
     return str(decimal.Decimal(random.randrange(100, 400))/100)
+    
+def character_range(num):
+    platechars = ""
+    for x in range(num):
+        platechars += str(chr(random.randrange(97, 123)))
+    
+    return platechars.upper()
+        
+def number_range(num):
+    nums = ""
+    for x in range(num):
+        nums += str(random.randrange(0,9))
+        
+    return nums
+    
+def generate_loc():
+    val = random.randrange(0,9)
+    return "EZPass Location " + str(val)
     
 
 class UserBehavior(TaskSet):
@@ -21,13 +39,14 @@ class UserBehavior(TaskSet):
     def load_page(self):
         plate = generate_licenseplate()
         toll = generate_toll()
+        location = generate_loc()
         
         self.client.post("/ezpass", {"Action":"SendMessage",
-            "MessageBody":"{'Plate':" + plate + ",'Toll':" + toll + ",'Location':'120th South'}",
+            "MessageBody":"{'Plate':" + plate + ",'Toll':" + toll + ",'Location':" + location + "}",
             "Expires":"2020-10-15T12%3A00%3A00Z",
             "Version":"2012-11-05"})
     
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
-    host = "sqs url"
+    host = "SQL URL goes here"
     wait_time = between(20, 600)
