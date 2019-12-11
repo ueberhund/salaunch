@@ -29,5 +29,5 @@ class UserBehavior(TaskSet):
     
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
-    host = "https://sqs.us-east-1.amazonaws.com/122554519915"
+    host = "queue url"
     wait_time = between(20, 600)
