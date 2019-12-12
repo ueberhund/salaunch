@@ -6,6 +6,7 @@ import json
 import os
 import pymysql
 from decimal import Decimal
+import time
 
 def save_to_database(plate, toll, location):
     
@@ -17,7 +18,7 @@ def save_to_database(plate, toll, location):
     item_count = 0
     conn = pymysql.connect(rds_host, user=rds_username, passwd=rds_password, db=rds_db_name, connect_timeout=5)
     with conn.cursor() as cur:
-        cur.execute("""insert into transactions_toll (plaza, description, plate, toll) values( '%s', '%s', '%s', %d)""" % (location, 'INTRA AGENCY V-TOLL', plate, Decimal(toll)))
+        cur.execute("""insert into transactions_toll (plaza, description, plate, toll, exit_time) values( '%s', '%s', '%s', %d, '%s')""" % (location, 'INTRA AGENCY V-TOLL', plate, Decimal(toll), time.strftime('%Y-%m-%d %H:%M:%S')))
         conn.commit()
         cur.close()
 
@@ -40,6 +41,13 @@ def main(event, context):
     print("Plate: " + plate + "; toll: " + toll + "; location:" + location)
     #todo add to database
     save_to_database(plate, toll, location)
+
+    #clear from the sqs queue
+    #print("Attempting to clear message")
+    #queue_url = os.environ['queue_url']
+    #sqs_client = boto3.client('sqs')
+    #sqs_client.delete_message(QueueUrl=queue_url, ReceiptHandle=receiptHandle)
+    #print("Message clearned")
 
 if __name__ == '__main__':
     main()
