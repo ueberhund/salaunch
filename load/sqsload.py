@@ -3,6 +3,10 @@
 #run as follows:
 #locust -f sqsload.py --no-web -c 1000 -r 100
 #where -c is # of users to spawn; -r is the hatch rate (users to spawn/second)
+#
+#master: locust -f sqsload.py --no-web --master --expect-slaves=4 -c 5000 -r 100 --run-time=60s
+#slave: locust -f sqsload.py --no-web --slave --master-host=HOSTIP
+#
 
 import random
 import decimal
