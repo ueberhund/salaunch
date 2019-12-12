@@ -42,11 +42,11 @@ class UserBehavior(TaskSet):
         location = generate_loc()
         
         self.client.post("/ezpass", {"Action":"SendMessage",
-            "MessageBody":"{'Plate':" + plate + ",'Toll':" + toll + ",'Location':" + location + "}",
+            "MessageBody":"{'Plate':'" + plate + "','Toll':'" + toll + "','Location':'" + location + "'}",
             "Expires":"2020-10-15T12%3A00%3A00Z",
             "Version":"2012-11-05"})
     
 class WebsiteUser(HttpLocust):
     task_set = UserBehavior
-    host = "SQL URL goes here"
+    host = "sql url"
     wait_time = between(20, 600)
