@@ -33,8 +33,11 @@ def number_range(num):
     return nums
     
 def generate_loc():
-    val = random.randrange(0,9)
-    return "EZPass Location " + str(val)
+    val1 = random.randrange(0,7)
+    if val1 >= 6:
+        val = random.randrange(6,9)
+        return "EZPass Location " + str(val)
+    return "EZPass Location " + str(val1)
     
 
 class UserBehavior(TaskSet):
