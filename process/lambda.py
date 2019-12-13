@@ -42,12 +42,5 @@ def main(event, context):
     #todo add to database
     save_to_database(plate, toll, location)
 
-    #clear from the sqs queue
-    #print("Attempting to clear message")
-    #queue_url = os.environ['queue_url']
-    #sqs_client = boto3.client('sqs')
-    #sqs_client.delete_message(QueueUrl=queue_url, ReceiptHandle=receiptHandle)
-    #print("Message clearned")
-
 if __name__ == '__main__':
     main()
